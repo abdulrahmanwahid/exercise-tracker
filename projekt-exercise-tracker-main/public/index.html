@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Tracker - FreeCodeCamp</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #ff8a50 0%, #ff6b35 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b35, #ff8a50);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b35;
+        }
+        
+        .form-section h2 {
+            color: #ff6b35;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff6b35, #ff8a50);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .api-docs {
+            grid-column: 1 / -1;
+            background: #f1f3f4;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .api-docs h3 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+        }
+        
+        .api-endpoint {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
+        }
+        
+        .method {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .endpoint {
+            font-family: monospace;
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .result-area {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .result-area h4 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        
+        .result-area pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Exercise Tracker</h1>
+            <p>FreeCodeCamp Backend Project - Full Stack JavaScript</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-section">
+                <h2>Create New User</h2>
+                <form id="user-form" action="/api/users" method="post">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <button type="submit" class="btn">Create User</button>
+                </form>
+            </div>
+            
+            <div class="form-section">
+                <h2>Add Exercise</h2>
+                <form id="exercise-form">
+                    <div class="form-group">
+                        <label for="userId">User ID:</label>
+                        <input type="text" class="form-control" id="userId" name="userId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" class="form-control" id="description" name="description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Duration (minutes):</label>
+                        <input type="number" class="form-control" id="duration" name="duration" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date (yyyy-mm-dd):</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                    <button type="submit" class="btn">Add Exercise</button>
+                </form>
+            </div>
+            
+            <div class="api-docs">
+                <h3>API Endpoints</h3>
+                <div class="api-endpoint">
+                    <span class="method">GET</span> <span class="endpoint">/api/users</span> - Get all users
+                </div>
+                <div class="api-endpoint">
+                    <span class="method">POST</span> <span class="endpoint">/api/users</span> - Create new user
+                </div>
+                <div class="api-endpoint">
+                    <span class="method">POST</span> <span class="endpoint">/api/users/:_id/exercises</span> - Add exercise
+                </div>
+                <div class="api-endpoint">
+                    <span class="method">GET</span> <span class="endpoint">/api/users/:_id/logs</span> - Get exercise logs
+                </div>
+                <div class="api-endpoint">
+                    Query parameters: <span class="endpoint">?from=yyyy-mm-dd&to=yyyy-mm-dd&limit=number</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-area">
+            <h4>Result:</h4>
+            <pre id="result">Submit a form to see results here...</pre>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            
+            fetch('/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            });
+        });
+        
+        document.getElementById('exercise-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userId = document.getElementById('userId').value;
+            const description = document.getElementById('description').value;
+            const duration = document.getElementById('duration').value;
+            const date = document.getElementById('date').value;
+            
+            fetch(`/api/users/${userId}/exercises`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    description: description,
+                    duration: duration,
+                    date: date
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            });
+        });
+    </script>
+</body>
+</html>
